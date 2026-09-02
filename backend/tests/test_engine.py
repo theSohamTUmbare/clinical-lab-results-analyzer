@@ -266,3 +266,21 @@ def test_care_pathway_falls_back_to_category(kb):
     r = classify(kb, "Platelets", 15, "10^3/uL")
     assert r["status"] == "Critical"
     assert r["care_pathway"]["source"].startswith("by_concept.platelets")
+
+
+def test_evidence_reports_the_band_that_was_actually_applied(kb):
+    """The displayed bands must match the rule that ran, not the default.
+
+    Fasting glucose carries a critical_band of 4.0. Showing the default 1.0 in
+    the evidence panel would tell a reviewer this result should have been
+    Critical when the engine correctly called it a Warning.
+    """
+    r = classify(kb, "Glucose", 130, "mg/dL")
+    bands = r["evidence"]["rule"]["bands"]
+    assert r["status"] == "Warning"
+    assert bands["warning"] == "0 < d <= 4"
+    assert bands["critical"].startswith("d > 4")
+
+    # A test without an override still reports the default.
+    default = classify(kb, "Hemoglobin", 11.0, "g/dL", sex="female")
+    assert default["evidence"]["rule"]["bands"]["warning"] == "0 < d <= 1"

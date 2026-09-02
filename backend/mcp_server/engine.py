@@ -596,8 +596,9 @@ def classify(
     step("apply_rules", rule, status=status)
     evidence["rule"] = {"id": rule, "rationale": rationale,
                         "panic_limit": panic_hit, "bands": {
-                            "normal": "d = 0", "warning": f"0 < d <= {WARNING_BAND}",
-                            "critical": f"d > {WARNING_BAND} or panic limit breached"}}
+                            "normal": "d = 0",
+                            "warning": f"0 < d <= {critical_band:g}",
+                            "critical": f"d > {critical_band:g} or panic limit breached"}}
 
     pathway = kb.care_pathway(res.concept_key, status, direction)
 
