@@ -264,11 +264,16 @@ GEMINI_API_KEY=your_key_here
 GEMINI_MODEL=gemini-2.0-flash
 ```
 
-Then:
+Then start it **with the virtualenv's interpreter**, not a bare `python`:
 
 ```bash
-python run.py
+.venv\Scripts\python.exe run.py
 ```
+
+Dependencies live in `backend/.venv`. If another Python is first on your PATH
+(Anaconda is the usual culprit) a bare `python run.py` cannot import `mcp` and the
+app will not start. `run.py` checks this up front and tells you which interpreter
+to use rather than failing obscurely.
 
 API on `http://127.0.0.1:8000`, interactive docs at `/docs`.
 
