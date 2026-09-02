@@ -41,7 +41,11 @@ _UNSAFE = [
     (r"\b(?:the )?patient has\b", "asserts a diagnosis"),
     (r"\bdiagnosed with\b", "asserts a diagnosis"),
     (r"\bthis (?:means|confirms) (?:you|the patient) (?:have|has)\b", "asserts a diagnosis"),
-    (r"\b\d+\s*(?:mg|mcg|ug|g|ml|units?)\b(?:\s*(?:/|per)\s*\w+)?", "contains a dose"),
+    # A dose is a mass or volume standing alone ("40 mg once daily"). The same
+    # letters followed by a slash are a concentration - "9 ug/L", "13 g/dL",
+    # "186 mg/L" - which is the result's own unit. Matching those rejected the
+    # legitimate explanation for almost every chemistry result.
+    (r"\b\d+(?:\.\d+)?\s*(?:mg|mcg|ug|g|ml|units?)\b(?!\s*/)", "contains a dose"),
     (r"\b(?:prescribe|prescription|dosage|titrate)\b", "discusses prescribing"),
     (r"\b(?:do not|don'?t|no need to) (?:see|consult|contact|seek)\b", "discourages seeking care"),
 ]

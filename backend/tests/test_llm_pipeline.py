@@ -216,3 +216,22 @@ async def test_a_missing_explanation_falls_back_for_that_row_only():
     provider = FakeGemini(json.dumps({"explanations": []}))
     report = await run_agent(provider)
     assert report["results"][0]["explanation"]["source"] == "rule_based"
+
+
+# -- Windows event-loop guard --------------------------------------------------
+
+def test_selector_loop_failure_gives_an_actionable_message(monkeypatch):
+    """A bare NotImplementedError must never reach the user.
+
+    Uvicorn switches Windows to a SelectorEventLoop whenever --reload is on, and
+    that loop cannot spawn the MCP server subprocess. The resulting error has an
+    empty message, so the client substitutes one that says how to fix it.
+    """
+    from app.mcp_client import MCPToolClient
+
+    monkeypatch.setattr("app.mcp_client.sys.platform", "win32")
+    hint = MCPToolClient._loop_hint()
+    assert "does not support subprocesses" in hint
+    assert "run.py" in hint
+    # The CLI rejects `--loop none`, so the hint must not recommend it there.
+    assert "drop --reload" in hint

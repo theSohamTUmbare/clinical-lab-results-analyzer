@@ -272,6 +272,15 @@ python run.py
 
 API on `http://127.0.0.1:8000`, interactive docs at `/docs`.
 
+> **Start it with `run.py`, not `uvicorn --reload`.** On Windows, uvicorn switches
+> to `WindowsSelectorEventLoopPolicy` whenever reload is enabled, and that event
+> loop cannot spawn subprocesses. The MCP knowledge server *is* a subprocess, so
+> it fails to start with a bare `NotImplementedError` and every classification
+> returns 503. `run.py` passes `loop="none"` to keep the Proactor loop, and hot
+> reload still works. If you do call uvicorn directly, omit `--reload` (the CLI
+> does not accept `--loop none`; only `uvicorn.run(loop="none")` does).
+> `/health` will tell you if you hit this.
+
 > **Without a key the app still runs end to end** in rule-based mode. Classification is
 > identical — it never uses AI — and explanations come from the deterministic templates.
 > The UI shows a banner saying so.

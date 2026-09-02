@@ -147,3 +147,32 @@ def test_rule_based_explanation_passes_its_own_checks():
     }
     report = verify_explanation(rule_based_explanation(result), FACT)
     assert report["passed"] is True
+
+
+# -- the dose check must not fire on the result's own unit ---------------------
+
+@pytest.mark.parametrize("text", [
+    "9 ug/L is low against the reference interval 15-150 ug/L.",
+    "This haemoglobin of 13 g/dL sits inside the interval.",
+    "A CRP of 186 mg/L indicates inflammation.",
+    "Vitamin B12 at 168 pg/mL is below the interval.",
+    "An eGFR of 18 mL/min/1.73m2 reflects reduced filtration.",
+])
+def test_concentration_units_are_not_read_as_doses(text):
+    """Regression: '9 ug/L' is the result's unit, not a prescribed dose.
+
+    The original pattern matched the mass part of every concentration, which
+    rejected legitimate explanations for almost every chemistry result.
+    """
+    from app.verifier import _check_safety
+    assert _check_safety(text)["passed"] is True
+
+
+@pytest.mark.parametrize("text", [
+    "Start 40 mg once daily.",
+    "Give 500 mg of the usual agent.",
+    "Administer 20 units immediately.",
+])
+def test_real_doses_are_still_caught(text):
+    from app.verifier import _check_safety
+    assert _check_safety(text)["passed"] is False

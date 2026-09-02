@@ -84,10 +84,34 @@ class MCPToolClient:
                     self.session = session
                     self._ready.set()
                     await self._shutdown.wait()
+        except NotImplementedError:
+            # Windows' SelectorEventLoop cannot spawn subprocesses, and raises a
+            # bare NotImplementedError with no message. Uvicorn switches to that
+            # loop whenever reload is enabled, so this is the failure a developer
+            # is most likely to hit - it deserves an answer, not a blank error.
+            self.error = self._loop_hint()
+            self.session = None
+            self._ready.set()
         except Exception as exc:  # noqa: BLE001 - surfaced via /health
             self.error = f"{type(exc).__name__}: {exc}"
             self.session = None
             self._ready.set()
+
+    @staticmethod
+    def _loop_hint() -> str:
+        loop_name = type(asyncio.get_event_loop_policy()).__name__
+        if sys.platform != "win32":
+            return ("This event loop does not support subprocesses, so the MCP "
+                    "server could not be launched.")
+        return (
+            f"Cannot start the MCP server: this asyncio event loop "
+            f"({loop_name}) does not support subprocesses on Windows. Uvicorn "
+            "switches to it whenever reload is enabled. Fix: start the backend "
+            "with 'python run.py', which passes loop=\"none\" and keeps the "
+            "Proactor loop. If you are calling uvicorn from the command line, "
+            "drop --reload (the CLI does not accept --loop none; only "
+            "uvicorn.run(loop=\"none\") does)."
+        )
 
     async def stop(self) -> None:
         self._shutdown.set()
