@@ -14,6 +14,7 @@ discarded if it fails. That is what makes the AI here safe to put in front of a 
 ## Contents
 
 - [What it does](#what-it-does)
+- [Screenshots](#screenshots)
 - [Architecture](#architecture)
 - [The classification engine](#the-classification-engine-the-hard-part)
 - [Grounding the AI](#grounding-the-ai)
@@ -44,38 +45,139 @@ deviation index, and the exact rule that fired.
 
 ---
 
+## Screenshots
+
+### Triage view
+
+Results are grouped by severity, and the counts across the top are the first thing you
+read. Test names are shown resolved, with the original underneath — `Lökosit` appears as
+*Leukocytes (WBC count) · reported as "Lökosit"* — so nothing is silently renamed.
+
+![Triage view showing the input panel, severity counts and the first warning results](docs/screenshots/01-overview.png)
+
+### An explanation, and the checks it had to pass
+
+The gauge places the value against its reference interval. The explanation is labelled
+**AI GENERATED** and **✓ GROUNDING VERIFIED**, and the five checks it passed are listed
+at the bottom rather than summarised as a tick.
+
+Note the two separate blocks of next steps: protocol actions **retrieved from the
+care-pathway table** are visually distinct from the ones the model **suggested**.
+
+![An expanded Ferritin result showing the AI explanation, protocol next steps, AI-suggested steps, and the five grounding checks it passed](docs/screenshots/02-explanation-verified.png)
+
+### The evidence trail behind the severity
+
+Every result can be opened to show exactly how its status was reached: the rule that
+fired, the severity bands, the deviation index, which reference interval was used **and
+where that interval came from**, and each pipeline step.
+
+The footer states it plainly — *no language model contributed to any step above*.
+
+![The full evidence trail for a Ferritin result, showing the decision, the reference interval and its provenance, how the input was interpreted, and the pipeline steps](docs/screenshots/03-evidence-trail.png)
+
+### How the analysis was produced
+
+Every run reports its own pipeline: the MCP tool calls made during classification, how the
+results were routed, and how many explanations were verified versus replaced.
+
+![The pipeline trace showing the Classify, Route and Explain stages with timings, the AI provider used, and the verification counts](docs/screenshots/04-pipeline-trace.png)
+
+---
+
 ## Architecture
 
+### The three parts, and who is allowed to decide what
+
+```mermaid
+flowchart LR
+    UI["🖥️ React UI<br/><br/>upload CSV<br/>enter results<br/>read findings"]
+
+    API["⚙️ FastAPI agent<br/><br/>Classify → Route<br/>→ Explain → Verify"]
+
+    KB["📚 MCP knowledge server<br/><br/>reference intervals<br/>test-name aliases<br/>care pathways"]
+
+    AI["✨ Gemini<br/><br/>writes the wording<br/>of explanations"]
+
+    UI -- "lab results<br/>(HTTP)" --> API
+    API -- "verified findings<br/>+ evidence" --> UI
+
+    API -- "what is this test?<br/>is this value normal?<br/>(MCP, stdio)" --> KB
+    KB -- "status + evidence trail<br/>DECIDES SEVERITY" --> API
+
+    API -- "already-decided facts<br/>(HTTPS)" --> AI
+    AI -- "explanation text<br/>NEVER decides severity" --> API
+
+    style KB fill:#dcfce7,stroke:#16a34a,stroke-width:2px
+    style AI fill:#ede9fe,stroke:#7c3aed,stroke-width:2px
+    style API fill:#dbeafe,stroke:#2563eb,stroke-width:2px
+    style UI fill:#f1f5f9,stroke:#64748b,stroke-width:2px
 ```
-┌──────────────────────────┐
-│  React (Vite)            │   LabInput · ResultsDisplay · SeverityBadge
-│                          │   ResultCard · EvidencePanel · RangeGauge
-└───────────┬──────────────┘   ValidationPanel
-            │ HTTP  /analyze_labs · /analyze_csv · /evaluate
-┌───────────▼──────────────┐
-│  FastAPI                 │
-│  ┌────────────────────┐  │
-│  │ Agent              │  │   Classify → Route → Explain → Verify
-│  └───┬────────────┬───┘  │
-│      │            │      │
-│      │ MCP        │ HTTPS
-│      │ (stdio)    │      │
-└──────┼────────────┼──────┘
-       │            │
-┌──────▼─────────┐  │        Tools:
-│  MCP server    │  │          classify_lab_result
-│                │  │          reference_range_lookup
-│  reference_    │  │          resolve_test_name
-│  ranges.json   │  │          care_pathway_lookup
-│  aliases.json  │  │          parse_reference_range
-│  care_         │  │          list_catalog
-│  pathways.json │  │
-└────────────────┘  │
-                    │
-             ┌──────▼───────┐
-             │ Gemini       │   explanations only, never classification
-             └──────────────┘
+
+**Read it in one line:** the UI sends results to the agent, the agent asks the MCP
+knowledge server what they mean, and Gemini is handed the answer afterwards purely to put
+it into words.
+
+The green box is the only thing that assigns a severity. The purple box never does — it
+receives facts that are already settled and writes prose about them. That separation is
+the whole design.
+
+### What happens to a single result
+
+```mermaid
+flowchart TB
+    IN["📄 Potasyum, 6.9, mmol/L<br/>as printed on the report"]
+
+    subgraph ENGINE ["🔒 Rule engine, inside the MCP server — no AI anywhere in here"]
+        direction LR
+        S1["1 · Resolve name<br/>Potasyum → Potassium"]
+        S2["2 · Read value<br/>6.9"]
+        S3["3 · Check units<br/>mmol/L ✓"]
+        S4["4 · Pick interval<br/>3.5–5.1"]
+        S5["5 · Score distance<br/>d = 1.13"]
+        S6["6 · Apply rules<br/>limit 6.5 breached"]
+        S1 --> S2 --> S3 --> S4 --> S5 --> S6
+    end
+
+    OUT["🚨 CRITICAL — severity is now settled<br/>+ full evidence trail"]
+    EXP["✨ Gemini writes the wording<br/>using only the facts above"]
+    CHK{"🔍 5 grounding checks"}
+    PASS["✓ Shown as AI GENERATED<br/>GROUNDING VERIFIED"]
+    FAIL["✗ AI text discarded<br/>rule-based wording shown"]
+
+    IN --> ENGINE
+    ENGINE --> OUT
+    OUT --> EXP --> CHK
+    CHK -- "all pass" --> PASS
+    CHK -- "any fail" --> FAIL
+
+    style ENGINE fill:#f0fdf4,stroke:#16a34a,stroke-width:2px
+    style S1 fill:#dcfce7,stroke:#16a34a
+    style S2 fill:#dcfce7,stroke:#16a34a
+    style S3 fill:#dcfce7,stroke:#16a34a
+    style S4 fill:#dcfce7,stroke:#16a34a
+    style S5 fill:#dcfce7,stroke:#16a34a
+    style S6 fill:#dcfce7,stroke:#16a34a
+    style IN fill:#f1f5f9,stroke:#64748b
+    style OUT fill:#fee2e2,stroke:#dc2626,stroke-width:2px
+    style EXP fill:#ede9fe,stroke:#7c3aed,stroke-width:2px
+    style CHK fill:#fef9c3,stroke:#ca8a04,stroke-width:2px
+    style PASS fill:#dcfce7,stroke:#16a34a,stroke-width:2px
+    style FAIL fill:#f1f5f9,stroke:#64748b,stroke-width:2px
 ```
+
+Colours match the first diagram: **green is deterministic** and **purple is the model**.
+The severity is red because by that point it is final — nothing downstream can change it.
+
+Steps 1–6 run inside the MCP knowledge server and involve no AI at all. Only after a
+severity exists does the model get involved, and even then its output has to survive the
+checks before anyone sees it.
+
+**MCP tools the agent can call:** `classify_lab_result` · `reference_range_lookup` ·
+`resolve_test_name` · `care_pathway_lookup` · `parse_reference_range` · `list_catalog`
+
+**React components:** `LabInput` · `ResultsDisplay` · `SeverityBadge` · `ResultCard` ·
+`EvidencePanel` · `RangeGauge` · `ValidationPanel`
 
 **All agent communication with clinical knowledge goes through MCP.** The FastAPI layer
 holds no reference ranges, no alias table and no care pathways of its own — it opens a
