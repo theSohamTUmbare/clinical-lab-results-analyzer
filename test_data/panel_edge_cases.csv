@@ -1,0 +1,21 @@
+Test_Name,Result,Unit,Reference_Range,Min_Reference,Max_Reference,Notes
+Hemoglobin,13.0,mmol/L,,,,unit conversion flips this to Critical (20.9 g/dL)
+Hemoglobin,13.0,furlongs,,,,incompatible unit - must refuse to classify
+Hemoglobinn,13.1,g/dL,,,,misspelling - fuzzy match with a visible flag
+PCT,0.27,%,0.17-0.38,0.17,0.38,ambiguous name resolved by unit to Plateletcrit
+PCT,3.2,ng/mL,,,,same name resolved by unit to Procalcitonin
+PCT,0.27,,,,,ambiguous with no unit - must stay Unknown
+Lökosit,6.37,10^3/uL,5-10.6,5,10.6,blood white cell count
+Lökosit (Strip),Negatif,Leu/uL,Negatif,,,urine dipstick - a different test entirely
+Zorblatt Factor,5,x,,,,unknown test - must not be guessed
+Ferritin,abc,ug/L,,,,unparseable value
+Ferritin,,ug/L,,,,missing value - row is skipped on ingest
+Troponin I,<3,ng/L,0-14,0,14,censored result below the reporting limit
+Glucose,130,mg/dL,70-99,70,99,abnormal but not critical - band override
+Glucose,7.2,mmol/L,,,,millimolar glucose converts to 129.7 mg/dL
+Platelets,155,10^3/uL,150-450,150,450,normal but borderline
+Potassium,6.9,mmol/L,3.5-5.1,3.5,5.1,action limit forces Critical
+Hemoglobin,11.0,g/dL,10-14,10,14,lab-supplied interval overrides ours
+Keton (Strip),3+,mg/dL,Negatif,,,qualitative grade escalating to Critical
+Nitrit (Strip),maybe,-,Negatif,,,unrecognised qualitative grade
+İnsülin,9.42,mU/L,2.6-24.9,2.6,24.9,Turkish name with diacritics
