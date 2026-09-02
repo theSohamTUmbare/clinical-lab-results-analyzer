@@ -1,0 +1,1226 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "Adult reference intervals used by the deterministic classifier. Illustrative values consistent with common clinical laboratory adult intervals; NOT a substitute for the issuing laboratory's own intervals.",
+    "range_semantics": "low/high are inclusive bounds of the Normal interval, expressed in canonical_unit.",
+    "panic_semantics": "panic.low / panic.high are absolute action limits. Breaching one forces status=Critical regardless of the deviation index.",
+    "units_semantics": "units maps an accepted input unit to the multiplier that converts it INTO canonical_unit.",
+    "critical_band_semantics": "critical_band is the deviation index (interval widths outside the reference interval) at which a result escalates from Warning to Critical. Defaults to 1.0. Tests with a narrow physiological interval but a wide clinically tolerable range carry a larger band."
+  },
+  "concepts": {
+    "hemoglobin": {
+      "display_name": "Hemoglobin",
+      "loinc": "718-7",
+      "category": "Hematology",
+      "canonical_unit": "g/dL",
+      "value_type": "numeric",
+      "units": {
+        "g/dL": 1.0,
+        "g/L": 0.1,
+        "mmol/L": 1.611
+      },
+      "ranges": [
+        {
+          "sex": "female",
+          "low": 12.0,
+          "high": 15.5
+        },
+        {
+          "sex": "male",
+          "low": 13.5,
+          "high": 17.5
+        },
+        {
+          "sex": "any",
+          "low": 12.0,
+          "high": 17.5
+        }
+      ],
+      "panic": {
+        "low": 7.0,
+        "high": 20.0
+      },
+      "measures": "Oxygen-carrying protein inside red blood cells.",
+      "low_meaning": "anaemia - reduced oxygen-carrying capacity",
+      "high_meaning": "polycythaemia or haemoconcentration"
+    },
+    "hematocrit": {
+      "display_name": "Hematocrit",
+      "loinc": "4544-3",
+      "category": "Hematology",
+      "canonical_unit": "%",
+      "value_type": "numeric",
+      "units": {
+        "%": 1.0,
+        "L/L": 100.0
+      },
+      "ranges": [
+        {
+          "sex": "female",
+          "low": 35.0,
+          "high": 45.0
+        },
+        {
+          "sex": "male",
+          "low": 40.0,
+          "high": 52.0
+        },
+        {
+          "sex": "any",
+          "low": 35.0,
+          "high": 49.0
+        }
+      ],
+      "panic": {
+        "low": 20.0,
+        "high": 60.0
+      },
+      "measures": "Percentage of blood volume occupied by red blood cells.",
+      "low_meaning": "anaemia or dilution",
+      "high_meaning": "dehydration or polycythaemia"
+    },
+    "erythrocytes": {
+      "display_name": "Erythrocytes (RBC count)",
+      "loinc": "789-8",
+      "category": "Hematology",
+      "canonical_unit": "10^6/uL",
+      "value_type": "numeric",
+      "units": {
+        "10^6/uL": 1.0,
+        "M/uL": 1.0,
+        "10^12/L": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "female",
+          "low": 3.8,
+          "high": 5.2
+        },
+        {
+          "sex": "male",
+          "low": 4.4,
+          "high": 5.9
+        },
+        {
+          "sex": "any",
+          "low": 3.8,
+          "high": 5.9
+        }
+      ],
+      "panic": null,
+      "measures": "Number of red blood cells per unit volume.",
+      "low_meaning": "anaemia",
+      "high_meaning": "polycythaemia"
+    },
+    "leukocytes": {
+      "display_name": "Leukocytes (WBC count)",
+      "loinc": "6690-2",
+      "category": "Hematology",
+      "canonical_unit": "10^3/uL",
+      "value_type": "numeric",
+      "units": {
+        "10^3/uL": 1.0,
+        "K/uL": 1.0,
+        "10^9/L": 1.0,
+        "/uL": 0.001
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 4.0,
+          "high": 10.6
+        }
+      ],
+      "panic": {
+        "low": 1.0,
+        "high": 30.0
+      },
+      "measures": "Total white blood cell count - the body's infection-fighting cells.",
+      "low_meaning": "leukopenia - increased infection risk",
+      "high_meaning": "leukocytosis - infection, inflammation or haematological disorder"
+    },
+    "platelets": {
+      "display_name": "Platelets",
+      "loinc": "777-3",
+      "category": "Hematology",
+      "canonical_unit": "10^3/uL",
+      "value_type": "numeric",
+      "units": {
+        "10^3/uL": 1.0,
+        "K/uL": 1.0,
+        "10^9/L": 1.0,
+        "/uL": 0.001
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 150.0,
+          "high": 450.0
+        }
+      ],
+      "panic": {
+        "low": 20.0,
+        "high": 1000.0
+      },
+      "measures": "Cell fragments responsible for blood clotting.",
+      "low_meaning": "thrombocytopenia - bleeding risk",
+      "high_meaning": "thrombocytosis - clotting risk"
+    },
+    "mcv": {
+      "display_name": "MCV (Mean Corpuscular Volume)",
+      "loinc": "787-2",
+      "category": "Hematology",
+      "canonical_unit": "fL",
+      "value_type": "numeric",
+      "units": {
+        "fL": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 80.0,
+          "high": 100.0
+        }
+      ],
+      "panic": null,
+      "measures": "Average size of a red blood cell.",
+      "low_meaning": "microcytic - often iron deficiency",
+      "high_meaning": "macrocytic - often B12 or folate deficiency"
+    },
+    "rdw": {
+      "display_name": "RDW (Red Cell Distribution Width)",
+      "loinc": "788-0",
+      "category": "Hematology",
+      "canonical_unit": "%",
+      "value_type": "numeric",
+      "units": {
+        "%": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 11.5,
+          "high": 14.5
+        }
+      ],
+      "panic": null,
+      "measures": "Variability in red blood cell size.",
+      "low_meaning": "uniform cell size",
+      "high_meaning": "anisocytosis - mixed cell sizes, common in early deficiency states"
+    },
+    "rdw_sd": {
+      "display_name": "RDW-SD",
+      "loinc": "21000-5",
+      "category": "Hematology",
+      "canonical_unit": "fL",
+      "value_type": "numeric",
+      "units": {
+        "fL": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 36.4,
+          "high": 46.3
+        }
+      ],
+      "panic": null,
+      "measures": "Absolute width of the red cell size distribution curve.",
+      "low_meaning": "narrow size distribution",
+      "high_meaning": "wide size distribution"
+    },
+    "pdw": {
+      "display_name": "PDW (Platelet Distribution Width)",
+      "loinc": "32207-3",
+      "category": "Hematology",
+      "canonical_unit": "fL",
+      "value_type": "numeric",
+      "units": {
+        "fL": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 9.8,
+          "high": 16.1
+        }
+      ],
+      "panic": null,
+      "measures": "Variability in platelet size.",
+      "low_meaning": "uniform platelet size",
+      "high_meaning": "variable platelet size, seen with increased platelet turnover"
+    },
+    "pct_plateletcrit": {
+      "display_name": "PCT (Plateletcrit)",
+      "loinc": "51637-7",
+      "category": "Hematology",
+      "canonical_unit": "%",
+      "value_type": "numeric",
+      "units": {
+        "%": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.17,
+          "high": 0.38
+        }
+      ],
+      "panic": null,
+      "measures": "Proportion of blood volume occupied by platelets.",
+      "low_meaning": "low platelet mass",
+      "high_meaning": "high platelet mass"
+    },
+    "procalcitonin": {
+      "display_name": "Procalcitonin",
+      "loinc": "33959-8",
+      "category": "Immunology",
+      "canonical_unit": "ng/mL",
+      "value_type": "numeric",
+      "units": {
+        "ng/mL": 1.0,
+        "ug/L": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.0,
+          "high": 0.5
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 2.0
+      },
+      "measures": "A marker that rises specifically in systemic bacterial infection.",
+      "low_meaning": "bacterial infection unlikely",
+      "high_meaning": "systemic bacterial infection or sepsis"
+    },
+    "neutrophils_pct": {
+      "display_name": "Neutrophils %",
+      "loinc": "770-8",
+      "category": "Hematology",
+      "canonical_unit": "%",
+      "value_type": "numeric",
+      "units": {
+        "%": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 50.0,
+          "high": 70.0
+        }
+      ],
+      "panic": null,
+      "measures": "Share of white cells that are neutrophils, the first responders to bacterial infection.",
+      "low_meaning": "neutropenia - infection risk",
+      "high_meaning": "neutrophilia - bacterial infection or stress response"
+    },
+    "lymphocytes_pct": {
+      "display_name": "Lymphocytes %",
+      "loinc": "736-9",
+      "category": "Hematology",
+      "canonical_unit": "%",
+      "value_type": "numeric",
+      "units": {
+        "%": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 18.0,
+          "high": 42.0
+        }
+      ],
+      "panic": null,
+      "measures": "Share of white cells that are lymphocytes, central to viral defence and immunity.",
+      "low_meaning": "lymphopenia",
+      "high_meaning": "lymphocytosis - often viral infection"
+    },
+    "monocytes_pct": {
+      "display_name": "Monocytes %",
+      "loinc": "5905-5",
+      "category": "Hematology",
+      "canonical_unit": "%",
+      "value_type": "numeric",
+      "units": {
+        "%": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 2.0,
+          "high": 11.0
+        }
+      ],
+      "panic": null,
+      "measures": "Share of white cells that are monocytes, involved in chronic inflammation.",
+      "low_meaning": "monocytopenia",
+      "high_meaning": "monocytosis - chronic infection or inflammation"
+    },
+    "ferritin": {
+      "display_name": "Ferritin",
+      "loinc": "2276-4",
+      "category": "Hematology",
+      "canonical_unit": "ug/L",
+      "value_type": "numeric",
+      "units": {
+        "ug/L": 1.0,
+        "ng/mL": 1.0,
+        "mcg/L": 1.0,
+        "ug/dL": 10.0
+      },
+      "ranges": [
+        {
+          "sex": "female",
+          "low": 15.0,
+          "high": 150.0
+        },
+        {
+          "sex": "male",
+          "low": 30.0,
+          "high": 400.0
+        },
+        {
+          "sex": "any",
+          "low": 15.0,
+          "high": 300.0
+        }
+      ],
+      "panic": null,
+      "measures": "The body's stored iron.",
+      "low_meaning": "depleted iron stores - the earliest sign of iron deficiency",
+      "high_meaning": "iron overload, or an acute-phase response to inflammation"
+    },
+    "hba1c": {
+      "display_name": "HbA1c (Glycated Haemoglobin)",
+      "loinc": "4548-4",
+      "category": "Endocrinology",
+      "canonical_unit": "%",
+      "value_type": "numeric",
+      "units": {
+        "%": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 4.0,
+          "high": 5.6
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 10.0
+      },
+      "measures": "Average blood glucose over the previous 2-3 months.",
+      "low_meaning": "unusually low average glucose",
+      "high_meaning": "elevated average glucose - prediabetes or diabetes range",
+      "critical_band": 2.5
+    },
+    "glucose_fasting": {
+      "display_name": "Glucose (Fasting)",
+      "loinc": "1558-6",
+      "category": "Chemistry",
+      "canonical_unit": "mg/dL",
+      "value_type": "numeric",
+      "units": {
+        "mg/dL": 1.0,
+        "mmol/L": 18.016,
+        "g/L": 100.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 70.0,
+          "high": 99.0
+        }
+      ],
+      "panic": {
+        "low": 50.0,
+        "high": 400.0
+      },
+      "measures": "Blood sugar concentration after fasting.",
+      "low_meaning": "hypoglycaemia",
+      "high_meaning": "hyperglycaemia - impaired glucose regulation or diabetes",
+      "critical_band": 4.0
+    },
+    "insulin": {
+      "display_name": "Insulin",
+      "loinc": "20448-7",
+      "category": "Endocrinology",
+      "canonical_unit": "mU/L",
+      "value_type": "numeric",
+      "units": {
+        "mU/L": 1.0,
+        "uIU/mL": 1.0,
+        "pmol/L": 0.1667
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 2.6,
+          "high": 24.9
+        }
+      ],
+      "panic": null,
+      "measures": "The hormone that moves glucose from blood into cells.",
+      "low_meaning": "reduced insulin production",
+      "high_meaning": "hyperinsulinaemia - often insulin resistance",
+      "critical_band": 2.0
+    },
+    "tsh": {
+      "display_name": "TSH (Thyroid Stimulating Hormone)",
+      "loinc": "3016-3",
+      "category": "Endocrinology",
+      "canonical_unit": "mIU/L",
+      "value_type": "numeric",
+      "units": {
+        "mIU/L": 1.0,
+        "uIU/mL": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.4,
+          "high": 4.0
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 20.0
+      },
+      "measures": "The pituitary signal that drives thyroid hormone production.",
+      "low_meaning": "suppressed TSH - suggests hyperthyroidism",
+      "high_meaning": "elevated TSH - suggests hypothyroidism",
+      "critical_band": 2.0
+    },
+    "free_t4": {
+      "display_name": "Free T4",
+      "loinc": "3024-7",
+      "category": "Endocrinology",
+      "canonical_unit": "ng/dL",
+      "value_type": "numeric",
+      "units": {
+        "ng/dL": 1.0,
+        "pmol/L": 0.0777
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.87,
+          "high": 1.7
+        }
+      ],
+      "panic": null,
+      "measures": "The unbound, biologically active form of thyroid hormone T4.",
+      "low_meaning": "hypothyroidism",
+      "high_meaning": "hyperthyroidism"
+    },
+    "free_t3": {
+      "display_name": "Free T3",
+      "loinc": "3051-0",
+      "category": "Endocrinology",
+      "canonical_unit": "pg/mL",
+      "value_type": "numeric",
+      "units": {
+        "pg/mL": 1.0,
+        "pmol/L": 0.651
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 2.3,
+          "high": 4.2
+        }
+      ],
+      "panic": null,
+      "measures": "The unbound, biologically active form of thyroid hormone T3.",
+      "low_meaning": "hypothyroidism or non-thyroidal illness",
+      "high_meaning": "hyperthyroidism"
+    },
+    "total_ige": {
+      "display_name": "Total IgE",
+      "loinc": "19113-0",
+      "category": "Immunology",
+      "canonical_unit": "KU/L",
+      "value_type": "numeric",
+      "units": {
+        "KU/L": 1.0,
+        "kU/L": 1.0,
+        "IU/mL": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.1,
+          "high": 100.0
+        }
+      ],
+      "panic": null,
+      "measures": "Total circulating IgE antibody, associated with allergic response.",
+      "low_meaning": "low allergic activity",
+      "high_meaning": "atopy, allergic disease or parasitic infection",
+      "critical_band": 4.0
+    },
+    "potassium": {
+      "display_name": "Potassium",
+      "loinc": "2823-3",
+      "category": "Chemistry",
+      "canonical_unit": "mmol/L",
+      "value_type": "numeric",
+      "units": {
+        "mmol/L": 1.0,
+        "mEq/L": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 3.5,
+          "high": 5.1
+        }
+      ],
+      "panic": {
+        "low": 2.5,
+        "high": 6.5
+      },
+      "measures": "The main electrolyte inside cells; tightly controls heart rhythm.",
+      "low_meaning": "hypokalaemia - arrhythmia and weakness risk",
+      "high_meaning": "hyperkalaemia - risk of dangerous cardiac arrhythmia"
+    },
+    "sodium": {
+      "display_name": "Sodium",
+      "loinc": "2951-2",
+      "category": "Chemistry",
+      "canonical_unit": "mmol/L",
+      "value_type": "numeric",
+      "units": {
+        "mmol/L": 1.0,
+        "mEq/L": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 136.0,
+          "high": 145.0
+        }
+      ],
+      "panic": {
+        "low": 120.0,
+        "high": 160.0
+      },
+      "measures": "The main electrolyte in blood; governs fluid balance.",
+      "low_meaning": "hyponatraemia - confusion and seizure risk when severe",
+      "high_meaning": "hypernatraemia - usually dehydration"
+    },
+    "calcium": {
+      "display_name": "Calcium (Total)",
+      "loinc": "17861-6",
+      "category": "Chemistry",
+      "canonical_unit": "mg/dL",
+      "value_type": "numeric",
+      "units": {
+        "mg/dL": 1.0,
+        "mmol/L": 4.008
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 8.6,
+          "high": 10.2
+        }
+      ],
+      "panic": {
+        "low": 6.5,
+        "high": 13.0
+      },
+      "measures": "Circulating calcium, essential for nerve, muscle and bone function.",
+      "low_meaning": "hypocalcaemia - tetany and arrhythmia risk",
+      "high_meaning": "hypercalcaemia - dehydration, confusion, arrhythmia"
+    },
+    "creatinine": {
+      "display_name": "Creatinine",
+      "loinc": "2160-0",
+      "category": "Chemistry",
+      "canonical_unit": "mg/dL",
+      "value_type": "numeric",
+      "units": {
+        "mg/dL": 1.0,
+        "umol/L": 0.0113
+      },
+      "ranges": [
+        {
+          "sex": "female",
+          "low": 0.5,
+          "high": 1.1
+        },
+        {
+          "sex": "male",
+          "low": 0.7,
+          "high": 1.3
+        },
+        {
+          "sex": "any",
+          "low": 0.5,
+          "high": 1.3
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 4.0
+      },
+      "measures": "A muscle waste product cleared by the kidneys; a proxy for kidney filtration.",
+      "low_meaning": "low muscle mass, usually not clinically concerning",
+      "high_meaning": "reduced kidney filtration"
+    },
+    "urea_bun": {
+      "display_name": "Urea Nitrogen (BUN)",
+      "loinc": "3094-0",
+      "category": "Chemistry",
+      "canonical_unit": "mg/dL",
+      "value_type": "numeric",
+      "units": {
+        "mg/dL": 1.0,
+        "mmol/L": 2.8
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 7.0,
+          "high": 20.0
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 100.0
+      },
+      "measures": "Nitrogen waste from protein breakdown, cleared by the kidneys.",
+      "low_meaning": "low protein intake or liver disease",
+      "high_meaning": "reduced kidney clearance or dehydration"
+    },
+    "egfr": {
+      "display_name": "eGFR",
+      "loinc": "33914-3",
+      "category": "Chemistry",
+      "canonical_unit": "mL/min/1.73m2",
+      "value_type": "numeric",
+      "units": {
+        "mL/min/1.73m2": 1.0,
+        "mL/min": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 90.0,
+          "high": 200.0
+        }
+      ],
+      "panic": {
+        "low": 15.0,
+        "high": null
+      },
+      "measures": "Estimated kidney filtration rate.",
+      "low_meaning": "reduced kidney function - chronic kidney disease staging",
+      "high_meaning": "hyperfiltration or estimation artefact"
+    },
+    "alt": {
+      "display_name": "ALT (Alanine Aminotransferase)",
+      "loinc": "1742-6",
+      "category": "Chemistry",
+      "canonical_unit": "U/L",
+      "value_type": "numeric",
+      "units": {
+        "U/L": 1.0,
+        "IU/L": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "female",
+          "low": 7.0,
+          "high": 33.0
+        },
+        {
+          "sex": "male",
+          "low": 7.0,
+          "high": 41.0
+        },
+        {
+          "sex": "any",
+          "low": 7.0,
+          "high": 41.0
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 500.0
+      },
+      "measures": "A liver enzyme released when liver cells are injured.",
+      "low_meaning": "not clinically significant",
+      "high_meaning": "hepatocellular injury"
+    },
+    "ast": {
+      "display_name": "AST (Aspartate Aminotransferase)",
+      "loinc": "1920-8",
+      "category": "Chemistry",
+      "canonical_unit": "U/L",
+      "value_type": "numeric",
+      "units": {
+        "U/L": 1.0,
+        "IU/L": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 10.0,
+          "high": 40.0
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 500.0
+      },
+      "measures": "An enzyme found in liver and muscle, released on tissue injury.",
+      "low_meaning": "not clinically significant",
+      "high_meaning": "liver or muscle injury"
+    },
+    "bilirubin_total": {
+      "display_name": "Bilirubin (Total)",
+      "loinc": "1975-2",
+      "category": "Chemistry",
+      "canonical_unit": "mg/dL",
+      "value_type": "numeric",
+      "units": {
+        "mg/dL": 1.0,
+        "umol/L": 0.0585
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.2,
+          "high": 1.2
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 15.0
+      },
+      "measures": "A breakdown product of haemoglobin processed by the liver.",
+      "low_meaning": "not clinically significant",
+      "high_meaning": "jaundice - liver dysfunction or haemolysis"
+    },
+    "albumin": {
+      "display_name": "Albumin",
+      "loinc": "1751-7",
+      "category": "Chemistry",
+      "canonical_unit": "g/dL",
+      "value_type": "numeric",
+      "units": {
+        "g/dL": 1.0,
+        "g/L": 0.1
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 3.5,
+          "high": 5.0
+        }
+      ],
+      "panic": null,
+      "measures": "The main protein in blood, made by the liver.",
+      "low_meaning": "malnutrition, liver disease or protein loss",
+      "high_meaning": "usually dehydration"
+    },
+    "crp": {
+      "display_name": "CRP (C-Reactive Protein)",
+      "loinc": "1988-5",
+      "category": "Immunology",
+      "canonical_unit": "mg/L",
+      "value_type": "numeric",
+      "units": {
+        "mg/L": 1.0,
+        "mg/dL": 10.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.0,
+          "high": 5.0
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 200.0
+      },
+      "measures": "An acute-phase protein that rises rapidly with inflammation or infection.",
+      "low_meaning": "no detectable inflammation",
+      "high_meaning": "active inflammation or infection",
+      "critical_band": 4.0
+    },
+    "troponin_i": {
+      "display_name": "Troponin I (high sensitivity)",
+      "loinc": "42757-5",
+      "category": "Cardiology",
+      "canonical_unit": "ng/L",
+      "value_type": "numeric",
+      "units": {
+        "ng/L": 1.0,
+        "pg/mL": 1.0,
+        "ng/mL": 1000.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.0,
+          "high": 14.0
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 52.0
+      },
+      "measures": "A protein released into blood when heart muscle is damaged.",
+      "low_meaning": "no detectable myocardial injury",
+      "high_meaning": "myocardial injury - requires urgent cardiac assessment"
+    },
+    "ldl_cholesterol": {
+      "display_name": "LDL Cholesterol",
+      "loinc": "13457-7",
+      "category": "Chemistry",
+      "canonical_unit": "mg/dL",
+      "value_type": "numeric",
+      "units": {
+        "mg/dL": 1.0,
+        "mmol/L": 38.67
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.0,
+          "high": 100.0
+        }
+      ],
+      "panic": null,
+      "measures": "The cholesterol fraction that deposits in artery walls.",
+      "low_meaning": "favourable",
+      "high_meaning": "increased cardiovascular risk",
+      "critical_band": 2.0
+    },
+    "hdl_cholesterol": {
+      "display_name": "HDL Cholesterol",
+      "loinc": "2085-9",
+      "category": "Chemistry",
+      "canonical_unit": "mg/dL",
+      "value_type": "numeric",
+      "units": {
+        "mg/dL": 1.0,
+        "mmol/L": 38.67
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 40.0,
+          "high": 100.0
+        }
+      ],
+      "panic": null,
+      "measures": "The cholesterol fraction that clears cholesterol from arteries.",
+      "low_meaning": "increased cardiovascular risk",
+      "high_meaning": "generally favourable"
+    },
+    "triglycerides": {
+      "display_name": "Triglycerides",
+      "loinc": "2571-8",
+      "category": "Chemistry",
+      "canonical_unit": "mg/dL",
+      "value_type": "numeric",
+      "units": {
+        "mg/dL": 1.0,
+        "mmol/L": 88.57
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.0,
+          "high": 150.0
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 500.0
+      },
+      "measures": "Circulating fat used for energy storage.",
+      "low_meaning": "favourable",
+      "high_meaning": "increased cardiovascular and, when very high, pancreatitis risk",
+      "critical_band": 2.0
+    },
+    "vitamin_b12": {
+      "display_name": "Vitamin B12",
+      "loinc": "2132-9",
+      "category": "Chemistry",
+      "canonical_unit": "pg/mL",
+      "value_type": "numeric",
+      "units": {
+        "pg/mL": 1.0,
+        "ng/L": 1.0,
+        "pmol/L": 1.355
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 200.0,
+          "high": 900.0
+        }
+      ],
+      "panic": null,
+      "measures": "A vitamin essential for red blood cell and nerve function.",
+      "low_meaning": "deficiency - anaemia and neuropathy risk",
+      "high_meaning": "usually supplementation"
+    },
+    "vitamin_d": {
+      "display_name": "Vitamin D (25-OH)",
+      "loinc": "1989-3",
+      "category": "Chemistry",
+      "canonical_unit": "ng/mL",
+      "value_type": "numeric",
+      "units": {
+        "ng/mL": 1.0,
+        "nmol/L": 0.4
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 30.0,
+          "high": 100.0
+        }
+      ],
+      "panic": null,
+      "measures": "Vitamin D storage form, important for bone and immune health.",
+      "low_meaning": "insufficiency or deficiency",
+      "high_meaning": "excess supplementation"
+    },
+    "inr": {
+      "display_name": "INR",
+      "loinc": "6301-6",
+      "category": "Hematology",
+      "canonical_unit": "ratio",
+      "value_type": "numeric",
+      "units": {
+        "ratio": 1.0,
+        "-": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 0.8,
+          "high": 1.2
+        }
+      ],
+      "panic": {
+        "low": null,
+        "high": 5.0
+      },
+      "measures": "Standardised measure of how long blood takes to clot.",
+      "low_meaning": "increased clotting tendency",
+      "high_meaning": "prolonged clotting - bleeding risk"
+    },
+    "urine_ph": {
+      "display_name": "Urine pH (Dipstick)",
+      "loinc": "5803-2",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "numeric",
+      "units": {
+        "-": 1.0,
+        "pH": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 5.0,
+          "high": 9.0
+        }
+      ],
+      "panic": null,
+      "measures": "Acidity of the urine.",
+      "low_meaning": "acidic urine",
+      "high_meaning": "alkaline urine - can accompany infection or diet effects"
+    },
+    "urine_specific_gravity": {
+      "display_name": "Urine Specific Gravity (Dipstick)",
+      "loinc": "5811-5",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "numeric",
+      "units": {
+        "-": 1.0
+      },
+      "ranges": [
+        {
+          "sex": "any",
+          "low": 1.01,
+          "high": 1.03
+        }
+      ],
+      "panic": null,
+      "measures": "Urine concentration relative to water.",
+      "low_meaning": "dilute urine - high fluid intake or reduced concentrating ability",
+      "high_meaning": "concentrated urine - dehydration"
+    },
+    "urine_protein": {
+      "display_name": "Urine Protein (Dipstick)",
+      "loinc": "5804-0",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "qualitative",
+      "units": {},
+      "qualitative_map": {
+        "negative": "Normal",
+        "trace": "Warning",
+        "1+": "Warning",
+        "2+": "Warning",
+        "3+": "Critical",
+        "4+": "Critical",
+        "positive": "Warning"
+      },
+      "measures": "Protein leaking into the urine.",
+      "low_meaning": "",
+      "high_meaning": "proteinuria - possible kidney damage"
+    },
+    "urine_glucose": {
+      "display_name": "Urine Glucose (Dipstick)",
+      "loinc": "5792-7",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "qualitative",
+      "units": {},
+      "qualitative_map": {
+        "negative": "Normal",
+        "trace": "Warning",
+        "1+": "Warning",
+        "2+": "Warning",
+        "3+": "Critical",
+        "4+": "Critical",
+        "positive": "Warning"
+      },
+      "measures": "Glucose spilling into the urine.",
+      "low_meaning": "",
+      "high_meaning": "glycosuria - blood glucose above the renal threshold"
+    },
+    "urine_ketones": {
+      "display_name": "Urine Ketones (Dipstick)",
+      "loinc": "5797-6",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "qualitative",
+      "units": {},
+      "qualitative_map": {
+        "negative": "Normal",
+        "trace": "Warning",
+        "1+": "Warning",
+        "2+": "Critical",
+        "3+": "Critical",
+        "4+": "Critical",
+        "positive": "Warning"
+      },
+      "measures": "Ketone bodies produced when the body burns fat instead of glucose.",
+      "low_meaning": "",
+      "high_meaning": "ketosis - starvation, low-carbohydrate state, or diabetic ketoacidosis"
+    },
+    "urine_blood": {
+      "display_name": "Urine Blood / Erythrocytes (Dipstick)",
+      "loinc": "5794-3",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "qualitative",
+      "units": {},
+      "qualitative_map": {
+        "negative": "Normal",
+        "trace": "Warning",
+        "1+": "Warning",
+        "2+": "Warning",
+        "3+": "Critical",
+        "4+": "Critical",
+        "positive": "Warning"
+      },
+      "measures": "Red blood cells present in the urine.",
+      "low_meaning": "",
+      "high_meaning": "haematuria - infection, stones, or urinary tract pathology"
+    },
+    "urine_leukocytes": {
+      "display_name": "Urine Leukocytes (Dipstick)",
+      "loinc": "5799-2",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "qualitative",
+      "units": {},
+      "qualitative_map": {
+        "negative": "Normal",
+        "trace": "Warning",
+        "1+": "Warning",
+        "2+": "Warning",
+        "3+": "Critical",
+        "4+": "Critical",
+        "positive": "Warning"
+      },
+      "measures": "White blood cells present in the urine.",
+      "low_meaning": "",
+      "high_meaning": "pyuria - suggests urinary tract infection"
+    },
+    "urine_nitrite": {
+      "display_name": "Urine Nitrite (Dipstick)",
+      "loinc": "5802-4",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "qualitative",
+      "units": {},
+      "qualitative_map": {
+        "negative": "Normal",
+        "trace": "Warning",
+        "1+": "Warning",
+        "positive": "Warning"
+      },
+      "measures": "A by-product of certain bacteria in the urine.",
+      "low_meaning": "",
+      "high_meaning": "strongly suggests bacterial urinary tract infection"
+    },
+    "urine_bilirubin": {
+      "display_name": "Urine Bilirubin (Dipstick)",
+      "loinc": "1977-8",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "qualitative",
+      "units": {},
+      "qualitative_map": {
+        "negative": "Normal",
+        "trace": "Warning",
+        "1+": "Warning",
+        "2+": "Warning",
+        "3+": "Critical",
+        "positive": "Warning"
+      },
+      "measures": "Bile pigment appearing in the urine.",
+      "low_meaning": "",
+      "high_meaning": "bilirubinuria - hepatobiliary disease"
+    },
+    "urine_urobilinogen": {
+      "display_name": "Urine Urobilinogen (Dipstick)",
+      "loinc": "19161-9",
+      "category": "Urinalysis",
+      "canonical_unit": "-",
+      "value_type": "qualitative",
+      "units": {},
+      "qualitative_map": {
+        "normal": "Normal",
+        "negative": "Normal",
+        "trace": "Warning",
+        "1+": "Warning",
+        "2+": "Warning",
+        "3+": "Critical",
+        "positive": "Warning"
+      },
+      "measures": "A bilirubin breakdown product normally present in small amounts.",
+      "low_meaning": "",
+      "high_meaning": "raised urobilinogen - haemolysis or liver disease"
+    }
+  }
+}

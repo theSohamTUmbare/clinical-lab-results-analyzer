@@ -1,0 +1,540 @@
+{
+  "_meta": {
+    "description": "Test-name alias table. Keys are matched after normalisation (lowercase, Turkish/accented characters transliterated to ASCII, punctuation collapsed to single spaces). A value with more than one entry is an AMBIGUOUS alias - the resolver then disambiguates using the reported unit, and falls back to needs_review if it still cannot decide.",
+    "normalisation_note": "The '(Strip)' / '(Dipstick)' qualifier is deliberately NOT stripped: 'Lokosit' is a blood white-cell count while 'Lokosit (Strip)' is a urine dipstick result. Collapsing them would be a clinically dangerous merge."
+  },
+  "aliases": {
+    "hemoglobin": [
+      "hemoglobin"
+    ],
+    "haemoglobin": [
+      "hemoglobin"
+    ],
+    "hgb": [
+      "hemoglobin"
+    ],
+    "hb": [
+      "hemoglobin"
+    ],
+    "hematokrit": [
+      "hematocrit"
+    ],
+    "hematocrit": [
+      "hematocrit"
+    ],
+    "haematocrit": [
+      "hematocrit"
+    ],
+    "hct": [
+      "hematocrit"
+    ],
+    "eritrosit": [
+      "erythrocytes"
+    ],
+    "erythrocytes": [
+      "erythrocytes"
+    ],
+    "erythrocyte count": [
+      "erythrocytes"
+    ],
+    "rbc": [
+      "erythrocytes"
+    ],
+    "red blood cells": [
+      "erythrocytes"
+    ],
+    "red blood cell count": [
+      "erythrocytes"
+    ],
+    "lokosit": [
+      "leukocytes"
+    ],
+    "leukosit": [
+      "leukocytes"
+    ],
+    "leukocytes": [
+      "leukocytes"
+    ],
+    "leucocytes": [
+      "leukocytes"
+    ],
+    "wbc": [
+      "leukocytes"
+    ],
+    "white blood cells": [
+      "leukocytes"
+    ],
+    "white blood cell count": [
+      "leukocytes"
+    ],
+    "trombosit": [
+      "platelets"
+    ],
+    "platelets": [
+      "platelets"
+    ],
+    "platelet count": [
+      "platelets"
+    ],
+    "plt": [
+      "platelets"
+    ],
+    "mcv": [
+      "mcv"
+    ],
+    "ortalama eritrosit hacmi": [
+      "mcv"
+    ],
+    "mean corpuscular volume": [
+      "mcv"
+    ],
+    "rdw": [
+      "rdw"
+    ],
+    "rdw cv": [
+      "rdw"
+    ],
+    "red cell distribution width": [
+      "rdw"
+    ],
+    "rdw sd": [
+      "rdw_sd"
+    ],
+    "pdw": [
+      "pdw"
+    ],
+    "platelet distribution width": [
+      "pdw"
+    ],
+    "pct": [
+      "pct_plateletcrit",
+      "procalcitonin"
+    ],
+    "plateletcrit": [
+      "pct_plateletcrit"
+    ],
+    "trombositkrit": [
+      "pct_plateletcrit"
+    ],
+    "procalcitonin": [
+      "procalcitonin"
+    ],
+    "prokalsitonin": [
+      "procalcitonin"
+    ],
+    "notrofil": [
+      "neutrophils_pct"
+    ],
+    "neutrophils": [
+      "neutrophils_pct"
+    ],
+    "neutrophil percent": [
+      "neutrophils_pct"
+    ],
+    "neut": [
+      "neutrophils_pct"
+    ],
+    "lenfosit": [
+      "lymphocytes_pct"
+    ],
+    "lymphocytes": [
+      "lymphocytes_pct"
+    ],
+    "lymphocyte percent": [
+      "lymphocytes_pct"
+    ],
+    "lymph": [
+      "lymphocytes_pct"
+    ],
+    "monosit": [
+      "monocytes_pct"
+    ],
+    "monocytes": [
+      "monocytes_pct"
+    ],
+    "monocyte percent": [
+      "monocytes_pct"
+    ],
+    "mono": [
+      "monocytes_pct"
+    ],
+    "ferritin": [
+      "ferritin"
+    ],
+    "serum ferritin": [
+      "ferritin"
+    ],
+    "glikozile hemoglobin hba1c": [
+      "hba1c"
+    ],
+    "glikozile hemoglobin": [
+      "hba1c"
+    ],
+    "hba1c": [
+      "hba1c"
+    ],
+    "a1c": [
+      "hba1c"
+    ],
+    "glycated hemoglobin": [
+      "hba1c"
+    ],
+    "glycosylated hemoglobin": [
+      "hba1c"
+    ],
+    "glukoz": [
+      "glucose_fasting"
+    ],
+    "glucose": [
+      "glucose_fasting"
+    ],
+    "fasting glucose": [
+      "glucose_fasting"
+    ],
+    "glucose fasting": [
+      "glucose_fasting"
+    ],
+    "aclik kan sekeri": [
+      "glucose_fasting"
+    ],
+    "blood sugar": [
+      "glucose_fasting"
+    ],
+    "fbs": [
+      "glucose_fasting"
+    ],
+    "insulin": [
+      "insulin"
+    ],
+    "insuline": [
+      "insulin"
+    ],
+    "tsh": [
+      "tsh"
+    ],
+    "thyroid stimulating hormone": [
+      "tsh"
+    ],
+    "tiroid stimulan hormon": [
+      "tsh"
+    ],
+    "serbest t4": [
+      "free_t4"
+    ],
+    "free t4": [
+      "free_t4"
+    ],
+    "ft4": [
+      "free_t4"
+    ],
+    "serbest t3": [
+      "free_t3"
+    ],
+    "free t3": [
+      "free_t3"
+    ],
+    "ft3": [
+      "free_t3"
+    ],
+    "total ige": [
+      "total_ige"
+    ],
+    "ige": [
+      "total_ige"
+    ],
+    "immunoglobulin e": [
+      "total_ige"
+    ],
+    "potasyum": [
+      "potassium"
+    ],
+    "potassium": [
+      "potassium"
+    ],
+    "k": [
+      "potassium"
+    ],
+    "sodyum": [
+      "sodium"
+    ],
+    "sodium": [
+      "sodium"
+    ],
+    "na": [
+      "sodium"
+    ],
+    "kalsiyum": [
+      "calcium"
+    ],
+    "calcium": [
+      "calcium"
+    ],
+    "total calcium": [
+      "calcium"
+    ],
+    "ca": [
+      "calcium"
+    ],
+    "kreatinin": [
+      "creatinine"
+    ],
+    "creatinine": [
+      "creatinine"
+    ],
+    "serum creatinine": [
+      "creatinine"
+    ],
+    "creat": [
+      "creatinine"
+    ],
+    "ure": [
+      "urea_bun"
+    ],
+    "urea": [
+      "urea_bun"
+    ],
+    "bun": [
+      "urea_bun"
+    ],
+    "urea nitrogen": [
+      "urea_bun"
+    ],
+    "blood urea nitrogen": [
+      "urea_bun"
+    ],
+    "egfr": [
+      "egfr"
+    ],
+    "gfr": [
+      "egfr"
+    ],
+    "estimated gfr": [
+      "egfr"
+    ],
+    "alt": [
+      "alt"
+    ],
+    "sgpt": [
+      "alt"
+    ],
+    "alanine aminotransferase": [
+      "alt"
+    ],
+    "ast": [
+      "ast"
+    ],
+    "sgot": [
+      "ast"
+    ],
+    "aspartate aminotransferase": [
+      "ast"
+    ],
+    "total bilirubin": [
+      "bilirubin_total"
+    ],
+    "bilirubin total": [
+      "bilirubin_total"
+    ],
+    "toplam bilirubin": [
+      "bilirubin_total"
+    ],
+    "albumin": [
+      "albumin"
+    ],
+    "serum albumin": [
+      "albumin"
+    ],
+    "crp": [
+      "crp"
+    ],
+    "c reactive protein": [
+      "crp"
+    ],
+    "hs crp": [
+      "crp"
+    ],
+    "troponin": [
+      "troponin_i"
+    ],
+    "troponin i": [
+      "troponin_i"
+    ],
+    "hs troponin i": [
+      "troponin_i"
+    ],
+    "high sensitivity troponin i": [
+      "troponin_i"
+    ],
+    "ldl": [
+      "ldl_cholesterol"
+    ],
+    "ldl cholesterol": [
+      "ldl_cholesterol"
+    ],
+    "ldl kolesterol": [
+      "ldl_cholesterol"
+    ],
+    "hdl": [
+      "hdl_cholesterol"
+    ],
+    "hdl cholesterol": [
+      "hdl_cholesterol"
+    ],
+    "hdl kolesterol": [
+      "hdl_cholesterol"
+    ],
+    "trigliserit": [
+      "triglycerides"
+    ],
+    "triglycerides": [
+      "triglycerides"
+    ],
+    "triglyceride": [
+      "triglycerides"
+    ],
+    "vitamin b12": [
+      "vitamin_b12"
+    ],
+    "b12": [
+      "vitamin_b12"
+    ],
+    "cobalamin": [
+      "vitamin_b12"
+    ],
+    "vitamin d": [
+      "vitamin_d"
+    ],
+    "25 oh vitamin d": [
+      "vitamin_d"
+    ],
+    "vitamin d 25 oh": [
+      "vitamin_d"
+    ],
+    "inr": [
+      "inr"
+    ],
+    "international normalized ratio": [
+      "inr"
+    ],
+    "ph strip": [
+      "urine_ph"
+    ],
+    "urine ph": [
+      "urine_ph"
+    ],
+    "idrar ph": [
+      "urine_ph"
+    ],
+    "dansite strip": [
+      "urine_specific_gravity"
+    ],
+    "dansite": [
+      "urine_specific_gravity"
+    ],
+    "specific gravity": [
+      "urine_specific_gravity"
+    ],
+    "urine specific gravity": [
+      "urine_specific_gravity"
+    ],
+    "protein strip": [
+      "urine_protein"
+    ],
+    "urine protein": [
+      "urine_protein"
+    ],
+    "idrar protein": [
+      "urine_protein"
+    ],
+    "glukoz strip": [
+      "urine_glucose"
+    ],
+    "urine glucose": [
+      "urine_glucose"
+    ],
+    "idrar glukoz": [
+      "urine_glucose"
+    ],
+    "keton strip": [
+      "urine_ketones"
+    ],
+    "keton": [
+      "urine_ketones"
+    ],
+    "ketones": [
+      "urine_ketones"
+    ],
+    "urine ketones": [
+      "urine_ketones"
+    ],
+    "eritrosit strip": [
+      "urine_blood"
+    ],
+    "kan strip": [
+      "urine_blood"
+    ],
+    "urine blood": [
+      "urine_blood"
+    ],
+    "blood strip": [
+      "urine_blood"
+    ],
+    "lokosit strip": [
+      "urine_leukocytes"
+    ],
+    "leukosit strip": [
+      "urine_leukocytes"
+    ],
+    "urine leukocytes": [
+      "urine_leukocytes"
+    ],
+    "nitrit strip": [
+      "urine_nitrite"
+    ],
+    "nitrit": [
+      "urine_nitrite"
+    ],
+    "nitrite": [
+      "urine_nitrite"
+    ],
+    "urine nitrite": [
+      "urine_nitrite"
+    ],
+    "bilirubin strip": [
+      "urine_bilirubin"
+    ],
+    "urine bilirubin": [
+      "urine_bilirubin"
+    ],
+    "urobilinojen strip": [
+      "urine_urobilinogen"
+    ],
+    "urobilinojen": [
+      "urine_urobilinogen"
+    ],
+    "urobilinogen": [
+      "urine_urobilinogen"
+    ],
+    "urine urobilinogen": [
+      "urine_urobilinogen"
+    ],
+    "notrofil percent": [
+      "neutrophils_pct"
+    ],
+    "lenfosit percent": [
+      "lymphocytes_pct"
+    ],
+    "monosit percent": [
+      "monocytes_pct"
+    ],
+    "neutrophils percent": [
+      "neutrophils_pct"
+    ],
+    "lymphocytes percent": [
+      "lymphocytes_pct"
+    ],
+    "monocytes percent": [
+      "monocytes_pct"
+    ]
+  }
+}

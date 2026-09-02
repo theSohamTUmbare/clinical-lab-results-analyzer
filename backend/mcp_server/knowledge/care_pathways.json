@@ -1,0 +1,344 @@
+{
+  "_meta": {
+    "description": "Deterministic follow-up protocol. These are PROTOCOL actions retrieved from a curated table, not model output - the UI labels them as such so a clinician can tell them apart from AI-suggested next steps.",
+    "lookup_order": "by_concept['<status>:<direction>'] -> by_concept['<status>'] -> by_category['<status>'] -> default['<status>']",
+    "disclaimer": "Decision-support only. Does not replace clinical judgement or local escalation policy."
+  },
+  "default": {
+    "Critical": {
+      "urgency": "immediate",
+      "sla": "Review now",
+      "specialty": "Responsible clinician",
+      "actions": [
+        "Notify the responsible clinician immediately and document the read-back",
+        "Confirm the result on a fresh sample before acting on an isolated abnormality",
+        "Assess the patient clinically; do not treat the number in isolation"
+      ]
+    },
+    "Warning": {
+      "urgency": "routine-priority",
+      "sla": "Review within 24-72 hours",
+      "specialty": "Primary care",
+      "actions": [
+        "Flag for clinician review at the next scheduled contact",
+        "Correlate with symptoms, medications and prior results",
+        "Repeat the test to confirm the trend"
+      ]
+    },
+    "Normal": {
+      "urgency": "none",
+      "sla": "No action",
+      "specialty": "None",
+      "actions": ["No action required; continue routine monitoring"]
+    },
+    "Unknown": {
+      "urgency": "review",
+      "sla": "Manual review",
+      "specialty": "Laboratory",
+      "actions": [
+        "Test could not be matched to a known reference interval - route to a human for manual interpretation",
+        "Confirm the test name and units against the issuing laboratory's report"
+      ]
+    }
+  },
+  "by_category": {
+    "Hematology": {
+      "Critical": {
+        "urgency": "immediate",
+        "sla": "Review now",
+        "specialty": "Hematology",
+        "actions": [
+          "Schedule an urgent hematology consult",
+          "Request a peripheral blood smear review",
+          "Check for active bleeding, bruising or infection"
+        ]
+      },
+      "Warning": {
+        "urgency": "routine-priority",
+        "sla": "Review within 1-2 weeks",
+        "specialty": "Hematology / Primary care",
+        "actions": [
+          "Repeat full blood count in 2-4 weeks to establish a trend",
+          "Review iron studies, B12 and folate if red cell indices are involved"
+        ]
+      }
+    },
+    "Cardiology": {
+      "Critical": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Cardiology / Emergency",
+        "actions": [
+          "Escalate to emergency care immediately",
+          "Obtain a 12-lead ECG",
+          "Serial cardiac marker measurement per local ACS protocol"
+        ]
+      },
+      "Warning": {
+        "urgency": "urgent",
+        "sla": "Review within 24 hours",
+        "specialty": "Cardiology",
+        "actions": [
+          "Arrange same-day clinical assessment",
+          "Repeat the marker to establish a rise-or-fall pattern"
+        ]
+      }
+    },
+    "Endocrinology": {
+      "Critical": {
+        "urgency": "urgent",
+        "sla": "Review within 24 hours",
+        "specialty": "Endocrinology",
+        "actions": [
+          "Arrange urgent endocrinology review",
+          "Confirm on a repeat sample and review current medication"
+        ]
+      },
+      "Warning": {
+        "urgency": "routine-priority",
+        "sla": "Review within 2-4 weeks",
+        "specialty": "Endocrinology / Primary care",
+        "actions": [
+          "Repeat with a confirmatory test before changing management",
+          "Review diet, weight and medication adherence"
+        ]
+      }
+    },
+    "Urinalysis": {
+      "Critical": {
+        "urgency": "urgent",
+        "sla": "Review within 24 hours",
+        "specialty": "Primary care / Nephrology",
+        "actions": [
+          "Send urine for microscopy, culture and sensitivity",
+          "Arrange urgent clinical assessment"
+        ]
+      },
+      "Warning": {
+        "urgency": "routine-priority",
+        "sla": "Review within 1 week",
+        "specialty": "Primary care",
+        "actions": [
+          "Repeat urinalysis on a clean-catch midstream sample",
+          "Send for microscopy and culture if symptoms are present"
+        ]
+      }
+    },
+    "Immunology": {
+      "Warning": {
+        "urgency": "routine-priority",
+        "sla": "Review within 1 week",
+        "specialty": "Primary care",
+        "actions": [
+          "Correlate with clinical signs of infection or inflammation",
+          "Repeat to establish whether the level is rising or falling"
+        ]
+      }
+    }
+  },
+  "by_concept": {
+    "potassium": {
+      "Critical:High": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Emergency / Nephrology",
+        "actions": [
+          "Treat as a medical emergency - risk of cardiac arrhythmia",
+          "Obtain an ECG immediately",
+          "Exclude haemolysed sample as a cause before acting, but do not delay assessment",
+          "Follow the local hyperkalaemia protocol"
+        ]
+      },
+      "Critical:Low": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Emergency / Nephrology",
+        "actions": [
+          "Treat as a medical emergency - risk of cardiac arrhythmia",
+          "Obtain an ECG and check magnesium",
+          "Follow the local potassium replacement protocol"
+        ]
+      }
+    },
+    "sodium": {
+      "Critical": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Emergency / Nephrology",
+        "actions": [
+          "Escalate immediately - risk of seizure and cerebral oedema",
+          "Assess fluid status and neurological state",
+          "Correct at a controlled rate per local protocol; rapid correction is harmful"
+        ]
+      }
+    },
+    "hemoglobin": {
+      "Critical:Low": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Hematology / Emergency",
+        "actions": [
+          "Assess for active bleeding and haemodynamic instability",
+          "Group and save; consider transfusion per local threshold",
+          "Urgent hematology consult"
+        ]
+      },
+      "Warning:Low": {
+        "urgency": "routine-priority",
+        "sla": "Review within 1-2 weeks",
+        "specialty": "Primary care",
+        "actions": [
+          "Order iron studies, B12 and folate to identify the cause",
+          "Review for sources of blood loss",
+          "Repeat full blood count in 4 weeks"
+        ]
+      }
+    },
+    "platelets": {
+      "Critical:Low": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Hematology",
+        "actions": [
+          "Assess for bleeding; institute bleeding precautions",
+          "Exclude platelet clumping / EDTA pseudothrombocytopenia on a citrate sample",
+          "Urgent hematology consult"
+        ]
+      }
+    },
+    "ferritin": {
+      "Warning:Low": {
+        "urgency": "routine",
+        "sla": "Review within 2-4 weeks",
+        "specialty": "Primary care",
+        "actions": [
+          "Complete iron studies (serum iron, transferrin saturation, TIBC)",
+          "Review dietary iron intake and any source of blood loss",
+          "Discuss iron replacement with the responsible clinician"
+        ]
+      },
+      "Warning:High": {
+        "urgency": "routine",
+        "sla": "Review within 2-4 weeks",
+        "specialty": "Primary care",
+        "actions": [
+          "Interpret alongside CRP - ferritin rises with inflammation independent of iron stores",
+          "Consider transferrin saturation if iron overload is suspected"
+        ]
+      }
+    },
+    "hba1c": {
+      "Critical:High": {
+        "urgency": "urgent",
+        "sla": "Review within 1 week",
+        "specialty": "Endocrinology / Diabetes service",
+        "actions": [
+          "Refer to the diabetes service for treatment intensification",
+          "Check for symptoms of hyperglycaemia and screen for complications",
+          "Review current glucose-lowering therapy and adherence"
+        ]
+      },
+      "Warning:High": {
+        "urgency": "routine-priority",
+        "sla": "Review within 4 weeks",
+        "specialty": "Primary care",
+        "actions": [
+          "Confirm with a repeat HbA1c or fasting glucose",
+          "Offer lifestyle and dietary counselling",
+          "Screen for cardiovascular risk factors"
+        ]
+      }
+    },
+    "glucose_fasting": {
+      "Critical:Low": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Emergency",
+        "actions": [
+          "Treat hypoglycaemia immediately per local protocol",
+          "Recheck glucose after treatment",
+          "Review insulin or sulfonylurea dosing with the prescriber"
+        ]
+      },
+      "Critical:High": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Emergency / Endocrinology",
+        "actions": [
+          "Check ketones and venous blood gas to exclude diabetic ketoacidosis",
+          "Assess hydration and conscious level",
+          "Escalate to emergency care"
+        ]
+      }
+    },
+    "troponin_i": {
+      "Warning:High": {
+        "urgency": "urgent",
+        "sla": "Immediate",
+        "specialty": "Cardiology / Emergency",
+        "actions": [
+          "Any detectable rise above the upper reference limit warrants same-visit assessment",
+          "12-lead ECG and serial troponin per local ACS pathway"
+        ]
+      }
+    },
+    "creatinine": {
+      "Warning:High": {
+        "urgency": "routine-priority",
+        "sla": "Review within 1 week",
+        "specialty": "Primary care / Nephrology",
+        "actions": [
+          "Compare against the patient's baseline - acute change matters more than the absolute value",
+          "Review nephrotoxic medications and hydration status",
+          "Calculate eGFR and send urine albumin-creatinine ratio"
+        ]
+      }
+    },
+    "tsh": {
+      "Warning:High": {
+        "urgency": "routine",
+        "sla": "Review within 4-6 weeks",
+        "specialty": "Primary care / Endocrinology",
+        "actions": [
+          "Repeat TSH with free T4 in 6-8 weeks before starting treatment",
+          "Check thyroid peroxidase antibodies if persistently raised"
+        ]
+      }
+    },
+    "urine_nitrite": {
+      "Warning": {
+        "urgency": "routine-priority",
+        "sla": "Review within 24-48 hours",
+        "specialty": "Primary care",
+        "actions": [
+          "Send urine for culture and sensitivity before starting antibiotics",
+          "Assess for urinary symptoms, fever and flank pain",
+          "Treat per local antimicrobial guidance if symptomatic"
+        ]
+      }
+    },
+    "urine_blood": {
+      "Warning": {
+        "urgency": "routine-priority",
+        "sla": "Review within 1 week",
+        "specialty": "Primary care / Urology",
+        "actions": [
+          "Repeat urinalysis on a fresh clean-catch sample to confirm",
+          "Send urine microscopy and culture",
+          "If confirmed and non-infective, refer for haematuria investigation"
+        ]
+      }
+    },
+    "urine_ketones": {
+      "Critical": {
+        "urgency": "emergency",
+        "sla": "Immediate",
+        "specialty": "Emergency",
+        "actions": [
+          "Check blood glucose and venous blood gas urgently to exclude ketoacidosis",
+          "Escalate to emergency care if the patient is unwell or glucose is raised"
+        ]
+      }
+    }
+  }
+}
