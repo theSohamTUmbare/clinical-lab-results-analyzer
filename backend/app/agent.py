@@ -346,15 +346,20 @@ def _interval_text(res: dict, lab: dict) -> str:
 
 
 def _headline(counts: dict, total: int) -> str:
+    def agree(n: int, noun: str, verb: str) -> str:
+        """Keep noun and verb agreeing, so '1 result needs' reads correctly."""
+        return f"{n} {noun}{'' if n == 1 else 's'} {verb}{'s' if n == 1 else ''}"
+
     if counts["Critical"]:
-        return (f"{counts['Critical']} critical result"
-                f"{'s' if counts['Critical'] > 1 else ''} need immediate review.")
+        return agree(counts["Critical"], "critical result", "need") + " immediate review."
     if counts["Warning"]:
-        return (f"{counts['Warning']} result{'s' if counts['Warning'] > 1 else ''} "
-                "outside the reference interval need clinician review.")
+        return (agree(counts["Warning"], "result", "need") +
+                " clinician review after falling outside the reference interval.")
     if counts["Unknown"]:
-        return (f"{counts['Unknown']} result{'s' if counts['Unknown'] > 1 else ''} "
-                "could not be classified and need manual review.")
+        return (agree(counts["Unknown"], "result", "need") +
+                " manual review and could not be classified automatically.")
+    if total == 1:
+        return "The result is within its reference interval."
     return f"All {total} results are within their reference intervals."
 
 

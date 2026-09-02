@@ -62,19 +62,16 @@ export default function LabInput({ onAnalyze, busy, aiAvailable }) {
   const updateRow = (i, key, value) =>
     setRows((rs) => rs.map((r, idx) => (idx === i ? { ...r, [key]: value } : r)))
 
-  // Offer the canonical unit as soon as a known test is picked, so the most
-  // common source of a unit mismatch simply does not arise.
+  // Once a known test is recognised, surface its canonical unit as the unit
+  // field's *placeholder* rather than writing it into the value. Writing it in
+  // fights the user: they type over a value they did not put there and end up
+  // with "ug/Lug/L". A placeholder gives the same hint and stays out of the way,
+  // and an empty unit is already treated as the canonical unit by the backend.
+  const suggestedUnit = (name) =>
+    catalog.find((c) => c.display_name.toLowerCase() === name.trim().toLowerCase())?.unit ?? ''
+
   function onTestNameChange(i, value) {
-    const match = catalog.find(
-      (c) => c.display_name.toLowerCase() === value.trim().toLowerCase()
-    )
-    setRows((rs) =>
-      rs.map((r, idx) =>
-        idx === i
-          ? { ...r, test_name: value, unit: match && !r.unit ? match.unit : r.unit }
-          : r
-      )
-    )
+    setRows((rs) => rs.map((r, idx) => (idx === i ? { ...r, test_name: value } : r)))
   }
 
   return (
@@ -192,7 +189,12 @@ export default function LabInput({ onAnalyze, busy, aiAvailable }) {
                     <td>
                       <input
                         value={row.unit}
-                        placeholder="g/dL"
+                        placeholder={suggestedUnit(row.test_name) || 'unit'}
+                        title={
+                          suggestedUnit(row.test_name)
+                            ? `Leave blank to use ${suggestedUnit(row.test_name)}`
+                            : undefined
+                        }
                         onChange={(e) => updateRow(i, 'unit', e.target.value)}
                       />
                     </td>
