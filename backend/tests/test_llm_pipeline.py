@@ -235,3 +235,41 @@ def test_selector_loop_failure_gives_an_actionable_message(monkeypatch):
     assert "run.py" in hint
     # The CLI rejects `--loop none`, so the hint must not recommend it there.
     assert "drop --reload" in hint
+
+
+# -- converted units must not be misrepresented in the prompt ------------------
+
+def test_a_converted_result_is_never_paired_with_the_wrong_unit():
+    """Regression: the prompt showed the reported number with the canonical unit.
+
+    Haemoglobin reported as 13 mmol/L is 20.943 g/dL, which breaches the action
+    limit. Rendering that as "13 g/dL" put a value INSIDE the 12-15.5 g/dL
+    interval next to a Critical status, so the model wrote reassuring wording
+    and the status-consistency check rejected an explanation that was only wrong
+    because the prompt was.
+    """
+    fact = {
+        **FACTS[0],
+        "display_name": "Hemoglobin",
+        "value": 20.943,
+        "value_display": "13",
+        "unit": "mmol/L",
+        "canonical_unit": "g/dL",
+        "result_text": "13 mmol/L",
+        "converted_text": "20.943 g/dL",
+        "reference_text": "12-15.5 g/dL",
+        "status": "Critical",
+        "direction": "High",
+    }
+    prompt = GeminiProvider._build_prompt([fact])
+
+    assert "13 mmol/L" in prompt              # as the lab reported it
+    assert "20.943 g/dL" in prompt            # what was actually compared
+    assert "13 g/dL" not in prompt            # the contradiction that caused the bug
+
+
+def test_an_unconverted_result_stays_a_single_line():
+    fact = {**FACTS[0], "result_text": "6.9 mmol/L", "converted_text": ""}
+    prompt = GeminiProvider._build_prompt([fact])
+    assert "result_as_reported: 6.9 mmol/L" in prompt
+    assert "value_compared_against_the_interval" not in prompt

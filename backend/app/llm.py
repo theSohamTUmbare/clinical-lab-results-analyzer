@@ -256,11 +256,29 @@ class GeminiProvider:
         ]
         for f in facts:
             interval = f.get("reference_text") or "not applicable (qualitative test)"
+
+            # Where a unit conversion was applied, the reported figure and the
+            # figure actually compared against the interval are different numbers
+            # in different units. They must be presented as two separate facts.
+            # Pairing the reported number with the canonical unit produces a
+            # value that contradicts the status - "13 g/dL" for a result of
+            # 13 mmol/L, sitting inside a 12-15.5 g/dL interval while the status
+            # says Critical - and the model then writes reassuring wording that
+            # the grounding checks (correctly) reject.
+            converted = f.get("converted_text")
+            result_lines = f"  result_as_reported: {f.get('result_text') or 'n/a'}\n"
+            if converted:
+                result_lines += (
+                    f"  value_compared_against_the_interval: {converted}\n"
+                    f"  note: the reported result was converted to {f.get('canonical_unit')} "
+                    "before comparison; both figures describe the same measurement\n"
+                )
+
             lines.append(
                 f"\n- id: {f['id']}\n"
                 f"  test: {f['display_name']}\n"
                 f"  category: {f.get('category', 'n/a')}\n"
-                f"  result: {f['value_display']} {f.get('canonical_unit') or ''}".rstrip() + "\n"
+                + result_lines +
                 f"  reference_interval: {interval}\n"
                 f"  status: {f['status']}\n"
                 f"  direction: {f['direction']}\n"
