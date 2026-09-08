@@ -31,10 +31,13 @@ time during development.
 from __future__ import annotations
 
 import importlib.util
+import socket
 import sys
 from pathlib import Path
 
 BACKEND_ROOT = Path(__file__).resolve().parent
+HOST = "127.0.0.1"
+PORT = 8000
 
 
 def venv_python() -> Path:
@@ -66,15 +69,43 @@ def check_interpreter() -> None:
     sys.exit(1)
 
 
+def check_port_free() -> None:
+    """Refuse to start a second server on a port that is already serving.
+
+    Windows lets a second uvicorn bind a port another one already holds. The
+    two then answer alternate requests, so a stale server with a broken
+    environment produces intermittent 500s while the healthy one looks fine -
+    a genuinely confusing failure that cost real debugging time. Checking first
+    turns it into one clear message.
+    """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.settimeout(0.6)
+        if probe.connect_ex((HOST, PORT)) != 0:
+            return
+
+    print(f"ERROR: something is already listening on {HOST}:{PORT}.\n", file=sys.stderr)
+    print("Starting a second server would make both answer alternate requests,", file=sys.stderr)
+    print("which shows up as intermittent 500s. Stop the old one first:\n", file=sys.stderr)
+    if sys.platform == "win32":
+        print('  powershell -Command "Get-NetTCPConnection -LocalPort 8000 -State Listen |'
+              ' Select-Object -ExpandProperty OwningProcess -Unique |'
+              ' ForEach-Object { Stop-Process -Id $_ -Force }"\n', file=sys.stderr)
+    else:
+        print(f"  lsof -ti tcp:{PORT} | xargs kill -9\n", file=sys.stderr)
+    print("If it is a healthy server you started earlier, just use that one.", file=sys.stderr)
+    sys.exit(1)
+
+
 if __name__ == "__main__":
     check_interpreter()
+    check_port_free()
 
     import uvicorn
 
     uvicorn.run(
         "app.main:app",
-        host="127.0.0.1",
-        port=8000,
+        host=HOST,
+        port=PORT,
         reload=True,
         loop="none",
     )
